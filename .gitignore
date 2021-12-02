@@ -1,3 +1,8 @@
+.calva
+.clj-kondo
+.cpcache
+.lsp
+.portal
 pom.xml
 pom.xml.asc
 *.jar
