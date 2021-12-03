@@ -12,31 +12,36 @@ forward 2")
 
 (def input (data/input 2021 2))
 
-(defn input->xs [inp]
-  (mapv (comp (fn [[_ dir n]] [dir (Long/parseLong n)])
-              #(first (re-seq #"(\w+) (\d+)" %))) (str/split inp #"\n")))
+(defn input->vs [inp]
+  (mapv (comp (fn [[_ dir n]] [(keyword dir) (Long/parseLong n)])
+              #(re-matches #"(\w+) (\d+)" %))
+        (str/split inp #"\n")))
 
 (defn part-1 [inp]
-  (let [fs {"forward" (fn [[x y] n] [(+ x n) y])
-            "down" (fn [[x y] n] [x (+ y n)])
-            "up" (fn [[x y] n] [x (- y n)])}
-        rf (fn [coll [s n]] ((fs s) coll n))]
-    (->> (reduce rf [0 0] (input->xs inp))
-        (apply *))))
+  (let [rf (fn [[x y] [dir n]]
+             (case dir
+               :forward [(+ x n) y]
+               :down [x (+ y n)]
+               :up [x (- y n)]))]
+    (->> (reduce rf [0 0] (input->vs inp))
+         (apply *))))
 
 (comment
 
-  (input->xs sample)
+  (input->vs sample)
+  (part-1 sample)
   (part-1 input)
   
   )
 
+
 (defn part-2 [inp]
-  (let [fs {"forward" (fn [[x y z] n] [(+ x n) (+ y (* n z)) z])
-            "down" (fn [[x y z] n] [x y (+ z n)])
-            "up" (fn [[x y z] n] [x y (- z n)])}
-        rf (fn [coll [s n]] ((fs s) coll n))]
-    (->> (reduce rf [0 0 0] (input->xs inp))
+  (let [rf (fn [[x y aim] [dir n]]
+             (case dir
+               :forward [(+ x n) (+ y (* n aim)) aim]
+               :down [x y (+ aim n)]
+               :up [x y (- aim n)]))]
+    (->> (reduce rf [0 0 0] (input->vs inp))
          (take 2)
          (apply *))))
 
