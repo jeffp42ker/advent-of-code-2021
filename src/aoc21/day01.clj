@@ -49,3 +49,28 @@
   )
 
 
+;; minikomi
+;; https://www.reddit.com/r/adventofcode/comments/r66vow/2021_day_1_solutions/hmrfnhv/
+
+(defn advent-1 [vs]
+  (->> vs
+       (partition 2 1)
+       (filter #(apply < %))
+       (count)))
+
+(defn advent-2 [vs]
+  (->> vs
+       (partition 3 1)
+       (map #(apply + %))
+       (advent-1)))
+
+
+(comment
+
+(advent-1 (input->xs sample)) ; 7
+(advent-1 (input->xs input)) ; 1374 
+
+(advent-2 (input->xs sample)) ; 5
+(advent-2 (input->xs input)) ; 1418 
+
+)
