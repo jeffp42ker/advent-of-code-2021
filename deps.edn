@@ -1,3 +1,4 @@
 {:paths ["src"]
- :deps {aocd/aocd {:mvn/version "0.1.1"}}
+ :deps {aocd/aocd {:mvn/version "0.1.1"}
+        weavejester/dependency {:mvn/version "0.2.1"}}
  :aliases {}}
